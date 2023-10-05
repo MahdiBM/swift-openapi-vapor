@@ -6,7 +6,6 @@ enum Streaming {
 #if compiler(>=5.9)
     @available(macOS 14.0, iOS 17.0, watchOS 10.0, tvOS 17.0, *)
     actor Writer {
-        let unownedExecutor: UnownedSerialExecutor
         let writer: any Vapor.BodyStreamWriter
         let body: OpenAPIRuntime.HTTPBody
 
@@ -14,7 +13,6 @@ enum Streaming {
             writer: any Vapor.BodyStreamWriter,
             body: OpenAPIRuntime.HTTPBody
         ) {
-            self.unownedExecutor = writer.eventLoop.executor.asUnownedSerialExecutor()
             self.writer = writer
             self.body = body
         }
