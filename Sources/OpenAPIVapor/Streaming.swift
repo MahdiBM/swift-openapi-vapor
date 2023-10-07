@@ -18,13 +18,21 @@ enum Streaming {
         }
 
         func write() async {
+            print("b do", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
             do {
+                print("a do", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
                 for try await chunk in body {
+                    print("in for", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
                     try await writer.write(.buffer(ByteBuffer(bytes: chunk))).get()
+                    print("a for", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
                 }
+                print("done for", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
                 try await writer.write(.end).get()
+                print("ended", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
             } catch {
+                print("b err", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
                 try? await writer.write(.error(error)).get()
+                print("a err", Thread.current.name, Thread.current.threadPriority, Thread.current.qualityOfService.rawValue, Thread.current.isMainThread, Thread.current.isCancelled, Thread.current.isExecuting, Thread.current.isFinished)
             }
         }
     }
