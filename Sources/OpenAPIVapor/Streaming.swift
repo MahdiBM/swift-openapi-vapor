@@ -25,15 +25,15 @@ enum Streaming {
                 print("a do", Thread.current.name)
                 for try await chunk in body {
                     print("in for", Thread.current.name)
-                    try await writer.write(.buffer(ByteBuffer(bytes: chunk))).get()
+                    try await writer.write(.buffer(ByteBuffer(bytes: chunk))).getNew()
                     print("a for", Thread.current.name)
                 }
                 print("done for", Thread.current.name)
-                try await writer.write(.end).get()
+                try await writer.write(.end).getNew()
                 print("ended", Thread.current.name)
             } catch {
                 print("b err", Thread.current.name)
-                try? await writer.write(.error(error)).get()
+                try? await writer.write(.error(error)).getNew()
                 print("a err", Thread.current.name)
             }
         }
